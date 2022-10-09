@@ -1,0 +1,12 @@
+{
+  "files": [
+    "cursor.ts",
+  ],
+  "compilerOptions": {
+    "target": "es6",
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "outFile": "../cursor.js"
+  }
+}
