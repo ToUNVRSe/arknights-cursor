@@ -10,26 +10,15 @@ function getElement(string: string, item: Element = document.documentElement): H
   return tmp
 }
 
-function getParent(item: Element, level: number = 1): HTMLElement {
-  while (level--) {
-    let tmp: HTMLElement | null = item.parentElement
-    if (tmp === null) {
-      throw new Error("Unknown HTML")
-    }
-    item = tmp;
-  }
-  return item as HTMLElement
-}
-
 class Cursor {
   private now: MouseEvent = new MouseEvent('')
   private first: boolean = true
   private last: number = 0
   private moveIng: boolean = false
   private fadeIng: boolean = false
-  private readonly outer: CSSStyleDeclaration = getElement('#cursor-outer').style
-  private readonly effecter: CSSStyleDeclaration = getElement('#cursor-effect').style
-  private readonly attention: string = need;
+  private readonly outer: CSSStyleDeclaration
+  private readonly effecter: CSSStyleDeclaration
+  private readonly attention: string = need
 
   private move = (timestamp: number) => {
     if (this.now !== undefined) {
@@ -110,6 +99,13 @@ class Cursor {
   }
 
   constructor() {
+    let node : HTMLElement = document.createElement('div');
+    node.id = 'cursor-container'
+    node.innerHTML = `<div id="cursor-outer"></div><div id="cursor-effect"></div>`
+    document.body.appendChild(node)
+    this.outer = getElement('#cursor-outer', node).style
+    this.outer.top = '-100%'
+    this.effecter = getElement('#cursor-effect', node).style
     this.effecter.transform = 'translate(-50%, -50%) scale(0)'
     this.effecter.opacity = '1'
     window.addEventListener('mousemove', this.reset, { passive: true })
@@ -120,4 +116,4 @@ class Cursor {
   }
 }
 
-new Cursor()
+window.onload = ()=> new Cursor()
